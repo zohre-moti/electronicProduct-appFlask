@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محصولات</title>
+    <style>
+        body {
+            font-family: 'B Titr', Times, serif;
+            direction: rtl;
+            text-align: right;
+            font-family: 'B Titr', Times, serif;
+            background-image: url('static//background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px  rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .btn {
+            padding: 8px 15px;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn-add {
+            background-color: #007bff; 
+        }
+        .btn-add:hover {
+            background-color: #0056b3;
+        }
+        .btn-edit {
+            background-color: #28a745; 
+        }
+        .btn-edit:hover {
+            background-color: #218838;
+        }
+        .btn-delete {
+            background-color: #dc3545;  
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        .flash-message {
+            text-align: center;
+            color: rgb(77, 53, 9);  
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-box {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+       {% if messages %}
+           {% for category, message in messages %}
+              <div class="flash-message alert alert-{{ category }}">
+                 {{ message }}
+               </div>
+            {% endfor %}
+       {% endif %}
+    {% endwith %}
+    <h1 >لیست محصولات</h1>
+    <a href="{{ url_for('add_product') }}" class="btn btn-add">افزودن محصول جدید</a>
+    <div class="search-container">
+        <form action="/search" method="GET">
+            <input type="text" name="query" placeholder="جستجو در محصولات..." class="search-box" oninput="searchProducts(this.value)">
+        </form>
+    </div>
+    <table id="product-table">
+        <thead>
+            <tr>
+                <th>نام محصول</th>
+                <th>قیمت</th>
+                <th>موجودی</th>
+                <th>توضیحات</th>
+                <th>نظرات</th>
+                <th>ویرایش</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price}}</td>
+                <td>{{ product.quantity}}</td>
+                <td>{{ product.description }}</td>
+                <td><a href="{{ url_for('product_comments', product_id=product.id) }}" class="btn"> &#128172;</a></td>
+                <td><a href="{{ url_for('product_detail', id=product.id) }}" class="btn btn-edit">ویرایش</a></td>
+                <td><a href="{{ url_for('delete_product', id=product.id) }}" class="btn btn-delete" onclick="return confirm('آیا از حذف این محصول اطمینان دارید؟')">حذف</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function searchProducts(value) {
+            var rows = document.getElementById('product-table').rows;
+            for (var i = 1; i < rows.length; i++) {
+                var shouldHide = true;
+                for (var j = 0; j < rows[i].cells.length; j++) {
+                    if (rows[i].cells[j].textContent.includes(value)) {
+                        shouldHide = false;
+                        break;
+                    }
+                }
+                if (shouldHide) {
+                    rows[i].style.display = 'none';
+                } else {
+                    rows[i].style.display = '';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

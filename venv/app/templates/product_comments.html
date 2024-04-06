@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظرات محصول</title>
+    <style>
+        body {
+            font-family: 'B Titr', Times, serif;
+            background-image: url('http://127.0.0.1:5000/static/background.jpg');
+            direction: rtl; 
+            background-size: cover;
+            background-position: center;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px  rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .rating {
+            font-size: 20px;
+            width: 100px; 
+        }
+        .comment {
+            text-align: right; 
+            word-wrap: break-word; 
+        }
+        .rating span {
+            color: gold;
+        }
+    </style>
+    
+</head>
+<body>
+    <h1>لیست نظرات ثبت شده برای هر محصول</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>نظر</th>
+                <th>امتیاز</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment in comments %}
+            <tr>
+                <td>{{ comment.comment }}</td>
+                <td class="rating">{{ comment.rating }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        document.querySelectorAll('.rating').forEach(function(element) {
+            var rating = parseInt(element.textContent.trim());
+            element.innerHTML = '';
+            for (var i = 1; i <= 5; i++) {
+                var star = document.createElement('span');
+                if (i <= rating) {
+                    star.textContent = '★';
+                } else {
+                    star.textContent = '☆';
+                }
+                element.appendChild(star);
+            }
+        });
+    </script>
+</body>
+</html>

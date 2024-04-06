@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت نظر</title>
+    <style>
+        body {
+            font-family: 'B Titr', Times, serif;
+            background-image: url('http://127.0.0.1:5000/static/background.jpg');
+            background-size: cover;
+            background-position: center;
+            text-align: right;
+            direction: rtl;
+            margin: 0;
+            padding: 20px;
+        }
+        .comment-form {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center; 
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: rgb(12, 11, 11); /* رنگ قرمز برای عنوان */
+        }
+        textarea, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        .btn-submit {
+            background-color: #007bff; /* رنگ آبی برای دکمه ارسال */
+            color: #fff;
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-family:'B Titr', Times, serif;
+            margin-top: 10px; 
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="comment-form">
+        <h1>ثبت نظر</h1>
+        <form action="/submit_comment" method="POST">
+            <h1>عنوان محصول: {{ product.name }}</h1>
+            <!-- لیبل برای عنوان محصول با رنگ قرمز -->
+            <label for="comment">نظر شما:</label>
+            <textarea id="comment" name="comment" rows="4" cols="50" required></textarea>
+            <!-- ایکن برای امتیاز -->
+            <label for="rating">امتیاز:</label>
+            <!-- ایکن از کد html برای نمایش امتیاز استفاده شده است -->
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button type="submit" class="btn-submit">ارسال</button>
+        </form>
+    </div>
+</body>
+</html>
